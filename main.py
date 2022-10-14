@@ -4,8 +4,6 @@ import re
 
 os.system("cls")
 
-print("\nHello World! Cool Beans!\n")
-
 print("\n\nNEW INPUT\n")
 
 def arrayToInt(array): return [int(i) for i in array]
