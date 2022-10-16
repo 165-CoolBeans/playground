@@ -22,12 +22,12 @@ cv.imwrite("./output/output1.jpg", img2)
 
 
 dilate = cv.erode(img2, (4, 4), iterations=3)
-cv.imwrite("./output/output_erode.jpg", dilate)
+cv.imwrite("./output/output_dilate.jpg", dilate)
 
 erode = cv.dilate(img2, (4, 4), iterations=3)
-cv.imwrite("./output/output_dilate.jpg", erode)
+cv.imwrite("./output/output_erode.jpg", erode)
 
-img3 = cv.Canny(erode, 50, 150)
+img3 = cv.Canny(dilate, 50, 150)
 
 cv.imwrite("./output/output2.jpg", img3)
 
