@@ -1,19 +1,31 @@
-import os
-import math
-import re
+import numpy as np
+import cv2 as cv
 
-os.system("cls")
+def showImage(img, name="Image"):
+    cv.imshow(name, img)
+    cv.waitKey(0)
 
-print("\n\nNEW INPUT\n")
+def scaleImage(img, scale=0.75):
+    width = int(img.shape[1] * scale)
+    height = int(img.shape[0] * scale)
 
-def arrayToInt(array): return [int(i) for i in array]
+    return cv.resize(img, (width, height))
 
-def inc2dArray(array, x = 1): return [[j + x for j in i] for i in array]
+def getImageMidpoint(img): return (img.shape[1] // 2, img.shape[0] // 2)
 
-inputNum = []
 
-with open("input.txt", "r") as fp:
-    for i in fp.read().split("\n"): 
-        inputNum.append(i)
+img1 = cv.imread('input/fruit.png', cv.IMREAD_GRAYSCALE)
 
-print(inputNum)
+_, img2 = cv.threshold(img1, 150, 255, cv.THRESH_BINARY)
+
+
+img2 = cv.erode(img2, (3, 3), iterations=3)
+img2 = cv.dilate(img2, (3, 3), iterations=3)
+
+img3 = cv.Canny(img2, 50, 150)
+
+cv.imshow("Img1", img1)
+cv.imshow("Img2", img2)
+cv.imshow("Img3", img3)
+
+cv.waitKey(0)
