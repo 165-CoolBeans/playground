@@ -49,7 +49,7 @@ for i in range(1, totalLabels):
     area = stats[i, cv.CC_STAT_AREA]
 
     #   look for components that fit the area
-    if area > 12000 and area < 13000:
+    if area > 12000 and area < 14000:
         #   filters detected label from the mask
         componentMask = (labels == i).astype("uint8") * 255
         mask = cv.bitwise_or(mask, componentMask)
