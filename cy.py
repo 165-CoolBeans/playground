@@ -1,3 +1,10 @@
+#################################################
+# manual count values
+#   pollen1 = 68 dark, 27 light (95 total)
+#   pollen2 = 33 dark, 80 light (113 total)
+#################################################
+
+
 import cv2 as cv
 import numpy as np
 import matplotlib.pyplot as plt
@@ -14,7 +21,7 @@ def smolShow(img, caption):
     cv.imshow(caption, resized)
 
 # read image
-img = cv.imread('./input/pollen1.jpg')
+img = cv.imread('./input/pollen2.jpg')
 
 # grayscale image
 img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
@@ -58,5 +65,7 @@ print("Number of pollen detected: ", len(count))        # pollen1 manual count =
 #cv.imwrite('./outbin/gray.jpg', img_gray)
 #cv.imwrite('./outbin/blur.jpg', img_blur)
 #cv.imwrite('./outbin/canny.jpg', img_canny)
+cv.imwrite('./outbin/dilate.jpg', img_dilate)
+cv.imwrite('./outbin/rgb.jpg', rgb)
 
 print("Operation Done")
