@@ -21,7 +21,7 @@ def smolShow(img, caption):
     cv.imshow(caption, resized)
 
 # read image
-img = cv.imread('./input/pollen2.jpg')
+img = cv.imread('./input/pollen1.jpg')
 
 # grayscale image
 img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
