@@ -12,19 +12,28 @@ cv.imwrite("./output/output1.jpg", img1_gray)
 
 hist = cv.calcHist(img1_gray, [0], None, [256], [0, 256])
 mode = np.argmax(hist)
-_, img2 = cv.threshold(img1_gray, 110, mode, cv.THRESH_BINARY)
-_, img2 = cv.threshold(img1_gray, 110, 255, cv.THRESH_BINARY)
+_, img2 = cv.threshold(img1_gray, mode - 70, mode, cv.THRESH_BINARY)
+_, img2 = cv.threshold(img1_gray, mode - 70, 255, cv.THRESH_BINARY)
 
 img2 = cv.erode(img2, np.ones((3, 3), np.uint8), iterations=10)
 img2 = cv.dilate(img2, np.ones((3, 3), np.uint8), iterations=10)
 
-
 cv.imwrite("./output/output2.jpg", img2)
+
+_, img3 = cv.threshold(img1_gray, 80, 100, cv.THRESH_BINARY)
+
+
+cv.imwrite("./output/output3.jpg", img3)
+
+
+"""
+
+
 
 rows = img1.shape[0]
 circles = cv.HoughCircles(img2, cv.HOUGH_GRADIENT, 1, 
-                            rows/15, param1=30, param2=10,
-                            minRadius=10, maxRadius=200)
+                            rows/25, param1=200, param2=10,
+                            minRadius=30, maxRadius=200)
 
 
 if circles is not None:
@@ -39,3 +48,4 @@ if circles is not None:
         cv.circle(img1, center, radius, (255, 0, 255), 3) 
 
 cv.imwrite("./output/output3.jpg", img1)
+"""
