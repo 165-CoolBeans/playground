@@ -23,7 +23,7 @@ img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 img_blur = cv.GaussianBlur(img_gray, (51,51), 0)
 
 # use canny edge detection to get object edges; stuck here; outputs nothing on img_blur input
-img_canny = cv.Canny(img_blur, 0, 2000)
+img_canny = cv.Canny(img_blur, 5, 10)
 
 # show images
 smolShow(img, "default")
@@ -37,6 +37,6 @@ cv.destroyAllWindows()
 # save image
 #cv.imwrite('./outbin/gray.jpg', img_gray)
 #cv.imwrite('./outbin/blur.jpg', img_blur)
-cv.imwrite('./outbin/canny.jpg', img_canny)
+#cv.imwrite('./outbin/canny.jpg', img_canny)
 
 print("Operation Done")
