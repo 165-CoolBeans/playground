@@ -1,5 +1,4 @@
 #=========================================================================================================#
-#
 # uses masking techniques to detect dark and light pollen separately
 #   - defective, no contours detected
 #   - possible causes: BGR value range incorrect AND/OR Canny edge detection threshold issue
