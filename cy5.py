@@ -1,5 +1,6 @@
 # was meant to use watershedding to detect overlapping pollen
 # but highlights dark ones instead
+# main ref: https://docs.opencv.org/3.3.1/d3/db4/tutorial_py_watershed.html
 
 import cv2 as cv
 import numpy as np
@@ -14,14 +15,10 @@ def smolShow(img, caption):
 
     cv.imshow(caption, resized)
 
-img = cv.imread('./input/pollen1.jpg')
+img = cv.imread('./input/pollen2.jpg')
 gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
 ret, thresh = cv.threshold(gray, 0, 255, cv.THRESH_BINARY_INV + cv.THRESH_OTSU)
-
-#kernel = np.ones((3,3), np.uint8)
-#dilate = cv.dilate(thresh, kernel, iterations = 6)
-#closing = cv.morphologyEx(thresh, cv.MORPH_CLOSE, kernel, iterations = 5)
 
 kernel = np.ones((3,3), np.uint8)
 opening = cv.morphologyEx(thresh, cv.MORPH_OPEN, kernel, iterations = 2)
@@ -42,9 +39,8 @@ markers[unknown==255] = 0
 
 cimg = img.copy()
 
-markers = cv.watershed(img, markers)
+markers = cv.watershed(cimg, markers)
 cimg[markers == -1] = [0, 0, 255]
-
 
 smolShow(img, "orig")
 smolShow(gray, "gray")
@@ -53,3 +49,5 @@ smolShow(cimg, "tada")
 
 cv.waitKey(0)
 cv.destroyAllWindows()
+
+#cv.imwrite("./output/darkpollen2.jpg", cimg)
