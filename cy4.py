@@ -43,11 +43,15 @@ for i in circles[0,:]:
     cv.circle(cimg,(i[0],i[1]),i[2],(0,255,0),4)
     cv.circle(cimg,(i[0],i[1]),2,(0,0,255),2)
 
+print(len(circles[0,:]))
+
 # show
 smolShow(img, "orig")
 smolShow(blur, "blur")
 smolShow(edge, "edge")
-smolShow(cimg, "final")
+smolShow(cimg, "final " + str(len(circles[0,:])))
 
 cv.waitKey(0)
 cv.destroyAllWindows()
+
+# cv.imwrite('./output/_pollencount_' + str(len(circles[0,:])) + '.jpg', cimg)
