@@ -20,8 +20,10 @@ class PollenDetector:
     def __init__(self):
         self.img = None
         self.pollenCount = 0
+        self.darkPollen = 0
+        self.lightPollen = 0
     
-    # [PRIVATE]: performs hough circe transform on given image 
+    # [PRIVATE]: performs hough circle transform on given image 
     def __hough(self, src):
         def __preprocessing(src):
             output = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
@@ -42,6 +44,31 @@ class PollenDetector:
             minRadius=self.params["hough"]["minRadius"],
             maxRadius=self.params["hough"]["maxRadius"]
         )
+    
+    def __contour(self, src):
+        def __preprocessing(src):
+            output = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
+
+            # contrast limited adaptive histogram equalization
+            clahe = cv.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+            output = clahe.apply(output)
+
+            # binarization
+            _, output = cv.threshold(output, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
+
+            # binary opening
+            output = cv.erode(output, np.ones((3, 3), np.uint8), iterations=10)
+            output = cv.dilate(output, np.ones((3, 3), np.uint8), iterations=10)
+
+            return output
+        
+        src = __preprocessing(src)
+
+        return cv.findContours(
+            ~src,
+            cv.RETR_EXTERNAL,
+            cv.CHAIN_APPROX_SIMPLE
+        )
 
     def detect(self, src):
         self.img = cv.imread(src)
@@ -49,5 +76,9 @@ class PollenDetector:
         circles = self.__hough(self.img)
         circles = np.uint16(np.around(circles))
         self.pollenCount = len(circles[0,:])
+
+        contours, _ = self.__contour(self.img)
+        self.darkPollen = len(contours)
+        self.lightPollen = self.pollenCount - self.darkPollen
 
         return circles
