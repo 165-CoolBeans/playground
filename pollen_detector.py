@@ -16,13 +16,13 @@ class PollenDetector:
             "maxRadius": 55                 # max radius
         },
         "threshold": {
-            "thresh": 60,
-            "maxval": 255,
-            "type": cv.THRESH_BINARY
+            "thresh": 60,                   # threshold value for binarization
+            "maxval": 255,                  # maximum value for THRESH_BINARY
+            "type": cv.THRESH_BINARY        # thresholding type
         },
         "binaryop": {
-            "kernel": np.ones((3, 3), np.uint8),
-            "iterations": 10
+            "kernel": np.ones((3, 3), np.uint8),    # structuring element used for dilation/erosion
+            "iterations": 10                        # number of times dilation/erosion is applied
         }
     }
 
@@ -54,6 +54,7 @@ class PollenDetector:
             maxRadius=self.params["hough"]["maxRadius"]
         )
     
+    # [PRIVATE]: detects contours on a given image
     def __contour(self, src):
         def __preprocessing(src):
             output = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
@@ -89,10 +90,12 @@ class PollenDetector:
     def detect(self, filepath):
         self.img = cv.imread(filepath)
 
+        # detect all pollen
         circles = self.__hough(self.img)
         circles = np.uint16(np.around(circles))
         self.pollenCount = len(circles[0,:])
 
+        # detect dark pollen
         contours, _ = self.__contour(self.img)
         self.darkPollen = len(contours)
         self.lightPollen = self.pollenCount - self.darkPollen
