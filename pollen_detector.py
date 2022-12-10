@@ -109,10 +109,14 @@ class PollenDetector:
             drawn = cv.circle(self.img, (i[0],i[1]), i[2], (0, 255, 0), 4)
             drawn = cv.circle(self.img, (i[0],i[1]), 2, (0, 0, 255), 2)
 
+        cv.imwrite('./output/_allpollen.jpg', drawn)
+
         return drawn
 
     def drawContours(self, filepath, contours):
         self.img = cv.imread(filepath)
         drawn = cv.drawContours(self.img, contours, -1, (0, 255, 0), 3)
+
+        cv.imwrite('./output/_darkpollen.jpg', drawn)
 
         return drawn
