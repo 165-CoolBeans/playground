@@ -87,6 +87,7 @@ class PollenDetector:
             cv.CHAIN_APPROX_SIMPLE
         )
 
+    # detects pollen from a given image; returns a tuple of hough circles and contours
     def detect(self, filepath):
         self.img = cv.imread(filepath)
 
@@ -100,4 +101,18 @@ class PollenDetector:
         self.darkPollen = len(contours)
         self.lightPollen = self.pollenCount - self.darkPollen
 
-        return circles
+        return (circles, contours)
+    
+    def drawHoughCircles(self, filepath, circles):
+        self.img = cv.imread(filepath)
+        for i in circles[0,:]:
+            drawn = cv.circle(self.img, (i[0],i[1]), i[2], (0, 255, 0), 4)
+            drawn = cv.circle(self.img, (i[0],i[1]), 2, (0, 0, 255), 2)
+
+        return drawn
+
+    def drawContours(self, filepath, contours):
+        self.img = cv.imread(filepath)
+        drawn = cv.drawContours(self.img, contours, -1, (0, 255, 0), 3)
+
+        return drawn
