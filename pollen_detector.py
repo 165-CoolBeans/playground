@@ -14,6 +14,15 @@ class PollenDetector:
             "param2": 20,                   # threshold for center detection; lower = more circles but prone to false circles
             "minRadius": 20,                # minimum circle radius
             "maxRadius": 55                 # max radius
+        },
+        "threshold": {
+            "thresh": 60,
+            "maxval": 255,
+            "type": cv.THRESH_BINARY
+        },
+        "binaryop": {
+            "kernel": np.ones((3, 3), np.uint8),
+            "iterations": 10
         }
     }
 
@@ -49,16 +58,23 @@ class PollenDetector:
         def __preprocessing(src):
             output = cv.cvtColor(src, cv.COLOR_BGR2GRAY)
 
-            # contrast limited adaptive histogram equalization
-            clahe = cv.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
-            output = clahe.apply(output)
-
             # binarization
-            _, output = cv.threshold(output, 0, 255, cv.THRESH_BINARY + cv.THRESH_OTSU)
+            _, output = cv.threshold(
+                output, 
+                self.params["threshold"]["thresh"], 
+                self.params["threshold"]["maxval"], 
+                self.params["threshold"]["type"]
+            )
 
             # binary opening
-            output = cv.erode(output, np.ones((3, 3), np.uint8), iterations=10)
-            output = cv.dilate(output, np.ones((3, 3), np.uint8), iterations=10)
+            output2 = cv.erode(output, 
+                self.params["binaryop"]["kernel"],
+                iterations=self.params["binaryop"]["iterations"]
+            )
+            output = cv.dilate(output, 
+                self.params["binaryop"]["kernel"],
+                iterations=self.params["binaryop"]["iterations"]
+            )
 
             return output
         
@@ -70,8 +86,8 @@ class PollenDetector:
             cv.CHAIN_APPROX_SIMPLE
         )
 
-    def detect(self, src):
-        self.img = cv.imread(src)
+    def detect(self, filepath):
+        self.img = cv.imread(filepath)
 
         circles = self.__hough(self.img)
         circles = np.uint16(np.around(circles))
