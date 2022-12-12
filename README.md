@@ -14,4 +14,4 @@ This is a Python project that takes an input image containing dark and light col
 > Cardano, CJE
 
 #### GUI
-Rayel, CA
+> Rayel, CA
