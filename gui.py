@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog as fd
+from tkinter import messagebox
 from PIL import Image,ImageTk
 import os
 
@@ -26,6 +27,8 @@ class Gui(tk.Tk):
         self.inputFileNameLabel.grid(column=1,row=0)
         self.inputFileName.grid(column=2,row=0)
         self.runButton.grid(column=3,row=0)
+
+        self.inputFilePath = None
         
         
         # output frame
@@ -63,6 +66,9 @@ class Gui(tk.Tk):
         self.inputFileName.config(state="disabled")
 
     def run(self):
+        if not self.inputFilePath:
+            messagebox.showwarning("Warning","No input file selected!")
+            return
         self.outputFilePath = "./output/output1.jpg"
         self.detector = pd.PollenDetector()
         self.detector.params["hough"]["minRadius"] = 20
