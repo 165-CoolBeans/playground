@@ -10,6 +10,7 @@ class Gui(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
         self.geometry("900x500")
+        self.title("Pollen Detector Hackathon by group Cool Beans")
         self.mainFrame = tk.Frame(self)
         self.inputFrame = tk.Frame(self.mainFrame)
         self.outputFrame = tk.Frame(self.mainFrame)
