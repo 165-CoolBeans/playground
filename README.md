@@ -15,3 +15,8 @@ This is a Python project that takes an input image containing dark and light col
 
 #### GUI
 > Rayel, CA
+
+## Instructions
+To run:
+- pip install cv2 pillow numpy
+- python main.py
